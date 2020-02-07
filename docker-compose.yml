@@ -2,6 +2,7 @@ version: '3'
 services:
   app:
     container_name: mauqah
+    working_dir: /var/www
     build:
       context: ./
     volumes:
