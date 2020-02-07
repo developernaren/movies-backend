@@ -12,9 +12,5 @@
 */
 
 Route::get('/', function () {
-
-    $users = \App\User::all();
-
-    dd($users);
     return view('welcome');
 });
