@@ -25,6 +25,7 @@ class GetFilmDetailsTest extends TestCase
                  'price',
                  'slug',
                  'links',
+                 'genres',
              ],
         ]);
     }

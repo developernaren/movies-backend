@@ -11,11 +11,6 @@ class FetchFilmTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testDefaultLimitIs1AndIsOrderByDescendingOrder()
     {
         factory(Genre::class, 3)->create();
@@ -32,8 +27,12 @@ class FetchFilmTest extends TestCase
         ]);
 
         $content = json_decode($response->getContent(), 1);
+        $firstFilm = $content['data'][0];
         $this->assertCount(1, $content['data']);
-        $this->assertEquals($lastFilm->id, $content['data'][0]['id']);
+        $this->assertEquals($lastFilm->id, $firstFilm['id']);
+        $this->assertEquals($lastFilm->name, $firstFilm['name']);
+        $this->assertEquals($lastFilm->description, $firstFilm['description']);
+        $this->assertEquals($lastFilm->country_id, $firstFilm['country_id']);
     }
 
     public function testPaginationWorks()
@@ -50,8 +49,10 @@ class FetchFilmTest extends TestCase
             ],
         ]);
 
+        $secondFilm = Film::take(1)->skip(1)->first();
+
         $content = json_decode($response->getContent(), 1);
         $this->assertCount(1, $content['data']);
-        $this->assertEquals(2, $content['data'][0]['id']);
+        $this->assertEquals($secondFilm->id, $content['data'][0]['id']);
     }
 }

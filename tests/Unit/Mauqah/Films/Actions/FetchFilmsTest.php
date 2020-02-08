@@ -4,6 +4,7 @@ namespace Tests\Unit\Mauqah\Films\Actions;
 
 use Illuminate\Http\Request;
 use Mauqah\Films\Actions\FetchFilms;
+use Mauqah\Films\Entities\Film;
 use Mauqah\Films\Interfaces\FilmInterface;
 use Mauqah\Films\Transformers\FilmTransformer;
 use Mauqah\Utils\ApiResponse;
@@ -20,7 +21,7 @@ class FetchFilmsTest extends AbstractFilm
         $filmModel = $this->getFilmModel();
 
         $film = Mockery::mock(FilmInterface::class);
-        $data = collect([new \Mauqah\Films\Entities\Film($filmModel)]);
+        $data = collect([new Film($filmModel)]);
 
         $film->shouldReceive('paginate')->andReturn(new Paginator(collect($data), 1, 1, 1));
 
@@ -36,5 +37,7 @@ class FetchFilmsTest extends AbstractFilm
         $this->assertSame($filmModel->slug, $firstArray['slug']);
         $this->assertSame($filmModel->photo, $firstArray['photo']);
         $this->assertSame($filmModel->country_id, $firstArray['country_id']);
+        $this->assertSame($filmModel->genres[0]->name, $firstArray['genres']['data'][0]['name']);
+        $this->assertSame($filmModel->genres[0]->id, $firstArray['genres']['data'][0]['id']);
     }
 }

@@ -5,6 +5,13 @@
             <h1>{{ film.name }}</h1>
             <p>{{ film.description }}</p>
             <p>
+                Genres:
+                <span v-for="genre in film.genres.data" class="chip">
+                    {{ genre.name }}
+                </span>
+            </p>
+
+            <p>
                 <router-link class="btn btn-lg btn-primary" href="" role="button" :to="{name: 'films.list'}">
                     Go to listing
                 </router-link>
@@ -31,3 +38,12 @@
         }
     }
 </script>
+<style>
+    .chip {
+        display: inline-block;
+        margin: 5px;
+        padding: 10px;
+        background: #e7e7e7;
+        border-radius: 20px;
+    }
+</style>

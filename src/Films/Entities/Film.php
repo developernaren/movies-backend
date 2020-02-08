@@ -65,6 +65,15 @@ class Film extends AbstractEntity implements FilmInterface
         return $this->model->toArray();
     }
 
+    public function getGenres(): Collection
+    {
+        $genres = $this->model->genres;
+
+        return $genres->map(function ($genre) {
+            return new Genre($genre);
+        });
+    }
+
     public function getComments(): Collection
     {
         $comments = $this->model->comments;
