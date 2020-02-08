@@ -74,6 +74,13 @@ class Film extends AbstractEntity implements FilmInterface
         $comments = $this->model->comments;
     }
 
+    public function findBySlug(string $slug): FilmInterface
+    {
+        $model = $this->model->whereSlug($slug)->first();
+
+        return new self($model);
+    }
+
     public function paginate($limit, $offset = 0): Paginator
     {
         $total = $this->model->count();
@@ -83,6 +90,8 @@ class Film extends AbstractEntity implements FilmInterface
             return new static($model);
         });
 
-        return new Paginator($entities, $total, $limit);
+        $currentPage = ($offset + 1) / $limit;
+
+        return new Paginator($entities, $total, $limit, $currentPage);
     }
 }

@@ -21,7 +21,7 @@ class FetchFilmTest extends TestCase
         factory(Genre::class, 3)->create();
         factory(Film::class, 3)->create();
         $lastFilm = Film::latest()->first();
-        $response = $this->get('/films');
+        $response = $this->get('/api/films');
         $response->assertStatus(200);
         $response->assertJsonCount(2);
         $response->assertJsonStructure([
@@ -40,7 +40,7 @@ class FetchFilmTest extends TestCase
     {
         factory(Genre::class, 3)->create();
         factory(Film::class, 3)->create();
-        $response = $this->get('/films?page=2');
+        $response = $this->get('/api/films?page=2');
         $response->assertStatus(200);
         $response->assertJsonCount(2);
         $response->assertJsonStructure([

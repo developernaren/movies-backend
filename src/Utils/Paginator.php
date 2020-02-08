@@ -27,7 +27,6 @@ class Paginator implements PaginatorInterface
 
     public function getLastPage()
     {
-        // TODO: Implement getLastPage() method.
     }
 
     public function getTotal()

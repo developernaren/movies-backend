@@ -18,10 +18,6 @@ class FetchFilms
         $offset = ($this->limit * $page) - 1;
         $films = $film->paginate($this->limit, $offset);
 
-        return $application->make(ApiResponse::class, [
-            'collection' => $films->getItems(),
-            'transformer' => $transformer,
-            'paginator' => $films,
-        ]);
+        return ApiResponse::createWithCollection($films->getItems(), $transformer, $films);
     }
 }

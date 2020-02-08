@@ -5,7 +5,7 @@ namespace Mauqah\Films\Interfaces;
 use Illuminate\Support\Collection;
 use Mauqah\Utils\Paginator;
 
-interface FilmInterface
+interface FilmInterface extends EntityInterface
 {
     public function getId(): int;
 
@@ -32,4 +32,6 @@ interface FilmInterface
     public function getComments(): Collection;
 
     public function paginate($limit, $offset = 0): Paginator;
+
+    public function findBySlug(string $slug): self;
 }
