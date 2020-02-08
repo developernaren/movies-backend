@@ -1,12 +1,12 @@
 <?php
 
-namespace Mauqah\Films\Responses;
+namespace Mauqah\Utils;
 
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Support\Collection;
 use League\Fractal\Manager;
 
-class Api implements Responsable
+class ApiResponse implements Responsable
 {
     private $collection;
     private $paginator;

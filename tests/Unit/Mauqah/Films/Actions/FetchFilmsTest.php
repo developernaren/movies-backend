@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Mauqah\Films\Actions\FetchFilms;
 use Mauqah\Films\Interfaces\FilmInterface;
-use Mauqah\Films\Responses\Api;
 use Mauqah\Films\Transformers\FilmTransformer;
+use Mauqah\Utils\ApiResponse;
 use Mauqah\Utils\Paginator;
 use Mockery;
 use Tests\TestCase;
@@ -29,7 +29,7 @@ class FetchFilmsTest extends TestCase
 
         $controller = new FetchFilms();
         $response = $controller($request, $film, app(), new FilmTransformer());
-        $this->assertInstanceOf(Api::class, $response);
+        $this->assertInstanceOf(ApiResponse::class, $response);
         $responseArray = $response->toResponse($request);
 
         $firstArray = $responseArray['data'][0];

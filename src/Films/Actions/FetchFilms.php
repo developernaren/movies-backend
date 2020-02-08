@@ -5,8 +5,8 @@ namespace Mauqah\Films\Actions;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Mauqah\Films\Interfaces\FilmInterface;
-use Mauqah\Films\Responses\Api;
 use Mauqah\Films\Transformers\FilmTransformer;
+use Mauqah\Utils\ApiResponse;
 
 class FetchFilms
 {
@@ -18,7 +18,7 @@ class FetchFilms
         $offset = ($this->limit * $page) - 1;
         $films = $film->paginate($this->limit, $offset);
 
-        return $application->make(Api::class, [
+        return $application->make(ApiResponse::class, [
             'collection' => $films->getItems(),
             'transformer' => $transformer,
             'paginator' => $films,
