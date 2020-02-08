@@ -8,6 +8,11 @@ abstract class AbstractEntity
 {
     protected $model;
 
+    public function getId(): int
+    {
+        return $this->model->id;
+    }
+
     public function findById(int $id): self
     {
         $model = $this->model->find($id);
@@ -17,7 +22,7 @@ abstract class AbstractEntity
 
     public function getAll(): Collection
     {
-        $models = $this->model->latest()->all();
+        $models = $this->model->latest()->get();
 
         return  $models->map(function ($model) {
             return new static($model);

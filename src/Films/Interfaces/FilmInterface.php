@@ -3,6 +3,7 @@
 namespace Mauqah\Films\Interfaces;
 
 use Illuminate\Support\Collection;
+use Mauqah\Films\Services\CreateFilm;
 use Mauqah\Utils\Paginator;
 
 interface FilmInterface extends EntityInterface
@@ -34,4 +35,6 @@ interface FilmInterface extends EntityInterface
     public function paginate($limit, $offset = 0): Paginator;
 
     public function findBySlug(string $slug): self;
+
+    public function create(CreateFilm $service): self;
 }

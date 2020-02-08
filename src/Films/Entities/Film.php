@@ -5,6 +5,7 @@ namespace Mauqah\Films\Entities;
 use App\Models\Film as FilmModel;
 use Illuminate\Support\Collection;
 use Mauqah\Films\Interfaces\FilmInterface;
+use Mauqah\Films\Services\CreateFilm;
 use Mauqah\Utils\Paginator;
 
 class Film extends AbstractEntity implements FilmInterface
@@ -17,11 +18,6 @@ class Film extends AbstractEntity implements FilmInterface
         if (null === $model) {
             $this->model = new FilmModel();
         }
-    }
-
-    public function getId(): int
-    {
-        return $this->model->id;
     }
 
     public function getName(): string
@@ -93,5 +89,13 @@ class Film extends AbstractEntity implements FilmInterface
         $currentPage = ($offset + 1) / $limit;
 
         return new Paginator($entities, $total, $limit, $currentPage);
+    }
+
+    public function create(CreateFilm $service): FilmInterface
+    {
+        $model = $this->model->create($service->toArray());
+        $model->genres()->sync($service->getGenreIds());
+
+        return  new static($model);
     }
 }

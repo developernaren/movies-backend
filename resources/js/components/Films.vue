@@ -51,7 +51,6 @@
         },
         methods: {
             async getFilms() {
-
                 this.submitting = true
                 const response = (await axios.get('api/films?page=' + this.pagination.current_page)).data
                 this.submitting = false

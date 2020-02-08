@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return redirect('/films');
+    return redirect()->route('films.list');
 });

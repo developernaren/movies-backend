@@ -8,6 +8,13 @@ class Film extends Model
 {
     protected $fillable = [
         'name',
+        'description',
+        'release_date',
+        'rating',
+        'ticket_price',
+        'country_id',
+        'photo',
+        'slug',
     ];
 
     public function genres()
