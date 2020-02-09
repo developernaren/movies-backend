@@ -33,6 +33,10 @@ The docker-compose also has a mysql server with credentials. You can use these c
 1. Run `docker exec -i mauqah php artisan migrate --seed`
 1. You can browse the application at `http://localhost`
 
+### Cs Fixer
+
+This project uses [PHP CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to format the code and comply with [PSR-2](https://www.php-fig.org/psr/psr-2/). To run this on `pre-commit` hook.  
+Run `./hook.sh` to copy the file from `hooks/pre-commit` to `.git/hooks/pre-commit`
 
 ### Features
 
