@@ -1,72 +1,71 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## Movies App
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+This is a movie app written in Laravel. 
 
-## About Laravel
+### Setup
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Clone the repo.
+1. Run `cp .env.example .env`
+1. Run `php artisan key:generate`
+1. Make sure the values in `.env` for database connection are correct.
+1. Run `php artisan migrate --seed` // this will create the database and few records
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Setup with docker
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**If you do not have docker installed in your system. [Refer here](https://docs.docker.com/install/)**  
+There is docker compose file provided in the repo which has all the necessary steps to build and run a docker container to host the app.  
+The docker container runs in PORT `8080`. So, you can access the site at `http://localhost` or you can create a virtual host to point to `127.0.0.1` and access as a domain  
+The docker-compose also has a mysql server with credentials. You can use these credentials in your `.env` file to connect to the database.
+```dotenv
+ DB_CONNECTION=mysql
+ DB_HOST=mysql5.7
+ DB_PORT=3306
+ DB_DATABASE=laravel
+ DB_USERNAME=root
+ DB_PASSWORD=root
+```
 
-## Learning Laravel
+#### Steps
+1. Clone the repo.
+1. Run `docker-compose up` form the root of the project.
+1. Run `docker exec -i mauqah php artisan key:generate`
+1. Make sure the values in the `.env` are as mentioned above.
+1. Run `docker exec -i mauqah php artisan migrate --seed`
+1. You can browse the application at `http://localhost`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Features
 
-## Laravel Sponsors
+1. `/` redirects to `/films`
+1. See a list of movies at `/films`
+    1. Click the `Detail` button to see the detail of the movie
+    1. Navigate the pagination links
+1. Click the detail `Go To Listing` button to go back to listing.
+1. Go to `/films/#/films/create` to create a film.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Architecture
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+#### Backend
+This project tries to be framework agnostic in it's core business logic. All the code for the app is written inside `src/` folder.  
 
-## Contributing
+I have separated the module `Films` to house all the logic for `films`  
+Controllers are inside `Films\Actions`. I make use of [Single Action Controllers](https://laravel.com/docs/5.8/controllers#single-action-controllers).
+This projects uses `Repository Pattern` to separate database logic from the actual `Entity` of the project.  
+Eloquent Models and Lower implementation of entities are not exposed anywhere outside of the `Entities` of the project. All of the entities have their own `Interfaces` so that they can be swapped later if need be.  
+All of the entities have their own `Tranformers` as well. Transformers are used to filter out or add the parts of the api we want to expose. It creates a layer between Entity and Api which makes manipulating Entity output for an API very easy.  
+I have created my own implementation of `Paginator` to separate Eloquent from the api. The `ApiResponse` combines the `Entities`, `Transformera` and `Paginator` to create appropriate response.  
+I have also created a `Service` folder to house my services. This can be assumed as a `Command` in a typical `CommandBus` pattern. This holds all the data necessary to do the intended action. This object is immutable.  
+I like my objects to be immutable. Once created they do not change state. There are no setters in my classes.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Frontend
 
-## Security Vulnerabilities
+The frontend of the application is written in VueJs. 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Tests
 
-## License
+I have added unit tests and feature tests for the application. Feature tests use `sqlite` driver for database connection.
+You can run tests by running `./vendor/bin/phpunit` from the root of the project
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Github Action
+
+There is a github action that run the test on every push to the repo.

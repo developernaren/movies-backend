@@ -73,10 +73,17 @@
             },
             async save() {
 
-                const mapIds = this.selectedGenres.map( genre => genre.id )
-                this.film.genre_ids = mapIds
-                const response = await axios.post('/api/films', this.film)
+                try {
+                    const mapIds = this.selectedGenres.map( genre => genre.id )
+                    this.film.genre_ids = mapIds
+                    const response = await axios.post('/api/films', this.film)
+                    alert('Film successfully added')
+                    this.$router.push({name: 'films.list'})
 
+                } catch (error) {
+
+                    alert('Please make sure all the fields are filled')
+                }
             },
             fileSelected() {
 
@@ -92,9 +99,9 @@
                 genres: [],
                 selectedGenres: [],
                 film: {
-                    name: 'Naren',
-                    description: 'Naren',
-                    ticket_price: 12,
+                    name: '',
+                    description: '',
+                    ticket_price: '',
                     rating: 5,
                     release_date: '',
                     genre_ids: [],

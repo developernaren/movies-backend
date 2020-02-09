@@ -4,15 +4,15 @@ namespace Mauqah\Films\Actions;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Mauqah\Films\Interfaces\FilmInterface;
-use Mauqah\Films\Requests\FilmRequest;
 use Mauqah\Films\Services\CreateFilm as Service;
 use Mauqah\Films\Transformers\FilmTransformer;
 use Mauqah\Utils\ApiResponse;
 
 class CreateFilm
 {
-    public function __invoke(FilmRequest $request, FilmInterface $film, Application $application, FilmTransformer $transformer)
+    public function __invoke(Request $request, FilmInterface $film, Application $application, FilmTransformer $transformer)
     {
         $service = $application->make(Service::class, [
             'name' => $request->get('name'),
