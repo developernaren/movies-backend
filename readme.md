@@ -14,7 +14,7 @@ This is a movie app written in Laravel.
 
 **If you do not have docker installed in your system. [Refer here](https://docs.docker.com/install/)**  
 There is docker compose file provided in the repo which has all the necessary steps to build and run a docker container to host the app.  
-The docker container runs in PORT `8080`. So, you can access the site at `http://localhost` or you can create a virtual host to point to `127.0.0.1` and access as a domain  
+You can access the site at `http://localhost` or you can create a virtual host to point to `127.0.0.1` and access as a domain  
 The docker-compose also has a mysql server with credentials. You can use these credentials in your `.env` file to connect to the database.
 ```dotenv
  DB_CONNECTION=mysql
